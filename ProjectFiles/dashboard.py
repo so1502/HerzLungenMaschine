@@ -1,10 +1,16 @@
 from cmath import nan
+from msilib.schema import CheckBox
 from tempfile import SpooledTemporaryFile
+from tkinter import Checkbutton
+from tkinter.tix import CheckList
 import dash
 from dash import Dash, html, dcc, Output, Input, dash_table
+from matplotlib.pyplot import draw
+import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
+#from utilities import max_value
 import utilities as ut
 import numpy as np
 import os
@@ -38,7 +44,6 @@ for i in range(number_of_subjects):
 data_names = ["SpO2 (%)", "Blood Flow (ml/s)","Temp (C)"]
 algorithm_names = ['min','max']
 blood_flow_functions = ['CMA','SMA','Show Limits']
-
 
 fig0= go.Figure()
 fig1= go.Figure()
@@ -115,10 +120,27 @@ def update_figure(value, algorithm_checkmarks):
     # Blood Temperature
     fig2 = px.line(ts, x="Time (s)", y = data_names[2])
     
-    ### Aufgabe 2: Min / Max ###
+    if 'max' in algorithm_checkmarks:
+        fig0.add_trace(go.Scatter(x=[145], y = [102],
+                    mode='markers', name='max', marker_color= 'green'))
+    if 'min' in algorithm_checkmarks:
+        fig0.add_trace(go.Scatter(x = [146, 147, 148], y = [92],
+                    mode='markers', name='min', marker_color= 'red'))
+    if 'max' in algorithm_checkmarks:
+        fig1.add_trace(go.Scatter(x = [124], y = [106.4],
+                    mode='markers', name='max', marker_color= 'green'))
+    if 'min' in algorithm_checkmarks:
+        fig1.add_trace(go.Scatter(x = [220], y = [37.11],
+                    mode='markers', name='min', marker_color= 'red'))
+    if 'max' in algorithm_checkmarks:
+        fig2.add_trace(go.Scatter(x = [10], y = [42],
+                    mode='markers', name='max', marker_color= 'green'))
+    if 'min' in algorithm_checkmarks:
+        fig2.add_trace(go.Scatter(x = [12], y = [29],
+                    mode='markers', name='min', marker_color= 'red'))
 
-    return fig0, fig1, fig2 
-
+    return fig0, fig1, fig2
+ 
 
 ## Blodflow Simple Moving Average Update
 @app.callback(
