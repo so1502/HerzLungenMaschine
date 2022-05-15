@@ -120,6 +120,7 @@ def update_figure(value, algorithm_checkmarks):
     # Blood Temperature
     fig2 = px.line(ts, x="Time (s)", y = data_names[2])
     
+    #Wenn max oder min angeklickt werden, dann werden Traces mit den jeweiligen Werten eingefügt.
     if 'max' in algorithm_checkmarks:
         fig0.add_trace(go.Scatter(x=[145], y = [102],
                     mode='markers', name='max', marker_color= 'green'))
@@ -151,7 +152,7 @@ def update_figure(value, algorithm_checkmarks):
 )
 def bloodflow_figure(value, bloodflow_checkmarks):
     
-    ## Calculate Moving Average: Aufgabe 2
+    ## Calculate Moving Average: Aufgabe 2.
     print(bloodflow_checkmarks)
     bf = list_of_subjects[int(value)-1].subject_data
     fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s)")
