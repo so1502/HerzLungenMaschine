@@ -23,7 +23,7 @@ Im Ordner [Project Files](ProjectFiles) finden sich zusätzlich Daten unter **in
 
 ## Aufgaben: HLM
 
-Als finales Projekt soll die Herz-Lungen-Maschine (HLM) behandelt werden. Diese ist für komplizierte Herz-Operationen essenziell, während denen sie viele verschiedene Vitalparameter beobachten und regeln kann. Nutzer ist dabei in erster Linie der Anästhesie, der die Operation begleitet und über Medikamente die Vitalparameter des Patienten einstellt. Für das folgende Projekt werden Datensätze der folgenden drei Parametern über einen Zeitraum von 481 Sekunden bereitgestellt.
+Als finales Projekt soll die Herz-Lungen-Maschine (HLM) behandelt werden. Diese ist für komplizierte Herz-Operationen essenziell, während denen sie viele verschiedene Vitalparameter beobachten und regeln kann. Nutzer ist dabei in erster Linie der Anästhesist, der die Operation begleitet und über Medikamente die Vitalparameter des Patienten einstellt. Für das folgende Projekt werden Datensätze der folgenden drei Parametern über einen Zeitraum von 481 Sekunden bereitgestellt.
 1) SpO2 (%)
 2) Blood Flow (ml/s)
 3) Blood Temperature (°C)
