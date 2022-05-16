@@ -121,24 +121,27 @@ def update_figure(value, algorithm_checkmarks):
     fig2 = px.line(ts, x="Time (s)", y = data_names[2])
     
     #Wenn max oder min angeklickt werden, dann werden Traces mit den jeweiligen Werten eingefügt.
+   
+    grp = ts.agg(['max', 'min', 'idxmax', 'idxmin'])
+    print(grp)
+   
+   
     if 'max' in algorithm_checkmarks:
-        fig0.add_trace(go.Scatter(x=[145], y = [102],
+        fig0.add_trace(go.Scatter(x= [grp.loc['idxmax', data_names[0]]], y= [grp.loc['max', data_names[0]]],
                     mode='markers', name='max', marker_color= 'green'))
-    if 'min' in algorithm_checkmarks:
-        fig0.add_trace(go.Scatter(x = [146, 147, 148], y = [92],
-                    mode='markers', name='min', marker_color= 'red'))
-    if 'max' in algorithm_checkmarks:
-        fig1.add_trace(go.Scatter(x = [124], y = [106.4],
+        fig1.add_trace(go.Scatter(x= [grp.loc['idxmax', data_names[1]]], y= [grp.loc['max', data_names[1]]],
                     mode='markers', name='max', marker_color= 'green'))
-    if 'min' in algorithm_checkmarks:
-        fig1.add_trace(go.Scatter(x = [220], y = [37.11],
-                    mode='markers', name='min', marker_color= 'red'))
-    if 'max' in algorithm_checkmarks:
-        fig2.add_trace(go.Scatter(x = [10], y = [42],
+        fig2.add_trace(go.Scatter(x= [grp.loc['idxmax', data_names[2]]], y= [grp.loc['max', data_names[2]]],
                     mode='markers', name='max', marker_color= 'green'))
+    
     if 'min' in algorithm_checkmarks:
-        fig2.add_trace(go.Scatter(x = [12], y = [29],
+        fig0.add_trace(go.Scatter(x= [grp.loc['idxmin', data_names[0]]], y= [grp.loc['min', data_names[0]]],
                     mode='markers', name='min', marker_color= 'red'))
+        fig1.add_trace(go.Scatter(x= [grp.loc['idxmin', data_names[1]]], y= [grp.loc['min', data_names[1]]],
+                    mode='markers', name='min', marker_color= 'red'))
+        fig2.add_trace(go.Scatter(x= [grp.loc['idxmin', data_names[2]]], y= [grp.loc['min', data_names[2]]],
+                    mode='markers', name='min', marker_color= 'red'))
+    
 
     return fig0, fig1, fig2
  
