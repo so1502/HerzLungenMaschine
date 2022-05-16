@@ -15,9 +15,8 @@ class Subject():
 
         __f = open(file_name)
         self.subject_data = pd.read_csv(__f)
-        self.subject_data = self.subject_data.interpolate(method='nearest', axis=0)
-        __splited_id = re.findall(r'\d+',file_name)      
-        self.subject_id = ''.join(__splited_id)
+        self.subject_data = self.subject_data.interpolate(method='nearest', axis=0)   
+        self.subject_id = file_name.split('.csv')[0][-1]
         self.names = self.subject_data.columns.values.tolist()
         self.time = self.subject_data["Time (s)"]        
         self.spO2 = self.subject_data["SpO2 (%)"]
