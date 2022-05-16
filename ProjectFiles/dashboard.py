@@ -153,15 +153,30 @@ def update_figure(value, algorithm_checkmarks):
     Input('subject-dropdown', 'value'),
     Input('checklist-bloodflow','value')
 )
+
 def bloodflow_figure(value, bloodflow_checkmarks):
     
-    ## Calculate Moving Average: Aufgabe 2.
+    ## Calculate Moving Average: Aufgabe 2
     print(bloodflow_checkmarks)
     bf = list_of_subjects[int(value)-1].subject_data
     fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s)")
 
+    ## Calculate Simple Moving Average: Aufagbe 2
+
+    if bloodflow_checkmarks == ["SMA"]:
+        bf = list_of_subjects[int(value)-1].subject_data
+        bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf["Blood Flow (ml/s)"],5) 
+        fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - SMA")
+
+    if bloodflow_checkmarks == ["CMA"]:
+        bf = list_of_subjects[int(value)-1].subject_data
+        bf["Blood Flow (ml/s) - CMA"] = ut.calculate_CMA(bf["Blood Flow (ml/s)"],2) 
+        fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - CMA")
+
+             
 
     return fig3
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
