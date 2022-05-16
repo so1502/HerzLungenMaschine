@@ -173,6 +173,7 @@ def bloodflow_figure(value, bloodflow_checkmarks):
         bf["Blood Flow (ml/s) - CMA"] = ut.calculate_CMA(bf["Blood Flow (ml/s)"],2) 
         fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - CMA")
 
+    #Durchschnitt
     avg = bf.mean()
     
     x = [0, 480]
