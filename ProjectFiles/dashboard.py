@@ -163,12 +163,10 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     ## Calculate Simple Moving Average: Aufagbe 2
     if bloodflow_checkmarks is not None:
         if bloodflow_checkmarks == ["SMA"]:
-            bf = list_of_subjects[int(value)-1].subject_data
             bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf["Blood Flow (ml/s)"],5) 
             fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - SMA")
 
         if bloodflow_checkmarks == ["CMA"]:
-            bf = list_of_subjects[int(value)-1].subject_data
             bf["Blood Flow (ml/s) - CMA"] = ut.calculate_CMA(bf["Blood Flow (ml/s)"],2) 
             fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - CMA")
 
