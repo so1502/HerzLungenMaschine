@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
-#from utilities import max_value
 import utilities as ut
 import numpy as np
 import os
@@ -125,21 +124,21 @@ def update_figure(value, algorithm_checkmarks):
     grp = ts.agg(['max', 'min', 'idxmax', 'idxmin'])
     print(grp)
    
-   
-    if 'max' in algorithm_checkmarks:
-        fig0.add_trace(go.Scatter(x= [grp.loc['idxmax', data_names[0]]], y= [grp.loc['max', data_names[0]]],
+    if algorithm_checkmarks is not None:
+        if 'max' in algorithm_checkmarks:
+            fig0.add_trace(go.Scatter(x= [grp.loc['idxmax', data_names[0]]], y= [grp.loc['max', data_names[0]]],
                     mode='markers', name='max', marker_color= 'green'))
-        fig1.add_trace(go.Scatter(x= [grp.loc['idxmax', data_names[1]]], y= [grp.loc['max', data_names[1]]],
+            fig1.add_trace(go.Scatter(x= [grp.loc['idxmax', data_names[1]]], y= [grp.loc['max', data_names[1]]],
                     mode='markers', name='max', marker_color= 'green'))
-        fig2.add_trace(go.Scatter(x= [grp.loc['idxmax', data_names[2]]], y= [grp.loc['max', data_names[2]]],
+            fig2.add_trace(go.Scatter(x= [grp.loc['idxmax', data_names[2]]], y= [grp.loc['max', data_names[2]]],
                     mode='markers', name='max', marker_color= 'green'))
     
-    if 'min' in algorithm_checkmarks:
-        fig0.add_trace(go.Scatter(x= [grp.loc['idxmin', data_names[0]]], y= [grp.loc['min', data_names[0]]],
+        if 'min' in algorithm_checkmarks:
+            fig0.add_trace(go.Scatter(x= [grp.loc['idxmin', data_names[0]]], y= [grp.loc['min', data_names[0]]],
                     mode='markers', name='min', marker_color= 'red'))
-        fig1.add_trace(go.Scatter(x= [grp.loc['idxmin', data_names[1]]], y= [grp.loc['min', data_names[1]]],
+            fig1.add_trace(go.Scatter(x= [grp.loc['idxmin', data_names[1]]], y= [grp.loc['min', data_names[1]]],
                     mode='markers', name='min', marker_color= 'red'))
-        fig2.add_trace(go.Scatter(x= [grp.loc['idxmin', data_names[2]]], y= [grp.loc['min', data_names[2]]],
+            fig2.add_trace(go.Scatter(x= [grp.loc['idxmin', data_names[2]]], y= [grp.loc['min', data_names[2]]],
                     mode='markers', name='min', marker_color= 'red'))
     
 
@@ -162,25 +161,29 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s)")
 
     ## Calculate Simple Moving Average: Aufagbe 2
+    if bloodflow_checkmarks is not None:
+        if bloodflow_checkmarks == ["SMA"]:
+            bf = list_of_subjects[int(value)-1].subject_data
+            bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf["Blood Flow (ml/s)"],5) 
+            fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - SMA")
 
-    if bloodflow_checkmarks == ["SMA"]:
-        bf = list_of_subjects[int(value)-1].subject_data
-        bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf["Blood Flow (ml/s)"],5) 
-        fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - SMA")
-
-    if bloodflow_checkmarks == ["CMA"]:
-        bf = list_of_subjects[int(value)-1].subject_data
-        bf["Blood Flow (ml/s) - CMA"] = ut.calculate_CMA(bf["Blood Flow (ml/s)"],2) 
-        fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - CMA")
+        if bloodflow_checkmarks == ["CMA"]:
+            bf = list_of_subjects[int(value)-1].subject_data
+            bf["Blood Flow (ml/s) - CMA"] = ut.calculate_CMA(bf["Blood Flow (ml/s)"],2) 
+            fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - CMA")
 
     #Durchschnitt
     avg = bf.mean()
-    
     x = [0, 480]
     y = avg.loc['Blood Flow (ml/s)']
+    fig3.add_trace(go.Scatter(x = x, y= [y,y], mode = 'lines', name = 'Mittelwert'))
 
-    fig3.add_trace(go.Scatter(x = x, y= [y,y]))
+    #Intervalle,
+    y_oben = (avg.loc['Blood Flow (ml/s)'])*1.15
+    fig3.add_trace(go.Scatter(x = x, y= [y_oben,y_oben], mode = 'lines', marker_color = 'blue', name = 'obere Grenze'))
     
+    y_unten = (avg.loc['Blood Flow (ml/s)'])*0.85
+    fig3.add_trace(go.Scatter(x = x, y= [y_unten, y_unten], mode = 'lines', marker_color = 'blue', name = 'untere Grenze'))
     return fig3
 
 
