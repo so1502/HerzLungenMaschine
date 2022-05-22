@@ -17,6 +17,10 @@ import re
 
 app = Dash(__name__)
 
+colors = {
+    'background': '#b0b4b5',
+    'text': '#1c92b0'
+}
 
 list_of_subjects = []
 subj_numbers = []
@@ -54,12 +58,16 @@ fig1 = px.line(df, x="Time (s)", y = "Blood Flow (ml/s)")
 fig2 = px.line(df, x="Time (s)", y = "Temp (C)")
 fig3 = px.line(df, x="Time (s)", y = "Blood Flow (ml/s)")
 
-app.layout = html.Div(children=[
+app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.H1(children='Cardiopulmonary Bypass Dashboard'),
+#app.layout = html.Div(children=[
+   # html.H1(children='Cardiopulmonary Bypass Dashboard'),
 
     html.Div(children='''
-        Hier könnten Informationen zum Patienten stehen....
+        Bitte wählen Sie zwischen Ihren Patienten aus. 
+        Mit der Aktivierung der 'min' und 'max' werden Ihnen die Extremwerte direkt im Graphen angezeigt...
     '''),
+
 
     dcc.Checklist(
     id= 'checklist-algo',
@@ -118,6 +126,25 @@ def update_figure(value, algorithm_checkmarks):
     fig1 = px.line(ts, x="Time (s)", y = data_names[1])
     # Blood Temperature
     fig2 = px.line(ts, x="Time (s)", y = data_names[2])
+
+    fig0.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+    )
+
+    fig1.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+    )
+
+    fig2.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+    )
+
     
     #Wenn max oder min angeklickt werden, dann werden Traces mit den jeweiligen Werten eingefügt.
    
@@ -167,6 +194,7 @@ def bloodflow_figure(value, bloodflow_checkmarks):
             fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - SMA")
 
         if bloodflow_checkmarks == ["CMA"]:
+
             bf["Blood Flow (ml/s) - CMA"] = ut.calculate_CMA(bf["Blood Flow (ml/s)"],2) 
             fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - CMA")
 
@@ -182,6 +210,12 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     
     y_unten = (avg.loc['Blood Flow (ml/s)'])*0.85
     fig3.add_trace(go.Scatter(x = x, y= [y_unten, y_unten], mode = 'lines', marker_color = 'blue', name = 'untere Grenze'))
+   
+    fig3.update_layout(
+        plot_bgcolor=colors['background'],
+        paper_bgcolor=colors['background'],
+        font_color=colors['text']
+    )   
     return fig3
 
 
