@@ -198,9 +198,12 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s)")
 
     ## Calculate Simple Moving Average: Aufagbe 2
+            ## Beobachtung für Aufgabe 4: Simple Moving Average wird 'glatter' je höher unser n gewählt wird.
+            ## Dadurch werden die Ergebnise 'verfälscht' und die Dauer der Fehlermeldung aus dem Alarm dadurch kürzer !
+
     if bloodflow_checkmarks is not None: #behebt Fehler: Nonetype object not iterable
         if bloodflow_checkmarks == ["SMA"]:
-            bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf["Blood Flow (ml/s)"],4) 
+            bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf["Blood Flow (ml/s)"],10) 
             fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - SMA")
 
         if bloodflow_checkmarks == ["CMA"]:
@@ -212,7 +215,7 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     avg = bf.mean()
     x = [0, 480]
     y = avg.loc['Blood Flow (ml/s)']
-    bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf[data_names[1]],4) 
+    bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf[data_names[1]],10) 
     bf_SMA =  bf["Blood Flow (ml/s) - SMA"]
 
     fig3.add_trace(go.Scatter(x = x, y= [y,y], mode = 'lines', name = 'Mittelwert'))
@@ -277,7 +280,7 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     #print(str(alert_sum))
 
     # message
-    info_msg = 'Blood flow was not between intervals for' + str(alert_sum) + ' seconds!'
+    info_msg = 'Blood flow was not between intervals for ' + str(alert_sum) + ' seconds!'
 
     
     return fig3, info_msg
