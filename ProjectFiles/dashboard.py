@@ -20,6 +20,7 @@ app = Dash(__name__)
 
 colors = {
     'background': '#b0b4b5',
+    'paper': '#c5c9c9',
     'text': '#1c92b0'
 }
 
@@ -139,19 +140,19 @@ def update_figure(value, algorithm_checkmarks):
 
     fig0.update_layout(
     plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
+    paper_bgcolor=colors['paper'],
     font_color=colors['text']
     )
 
     fig1.update_layout(
     plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
+    paper_bgcolor=colors['paper'],
     font_color=colors['text']
     )
 
     fig2.update_layout(
     plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
+    paper_bgcolor=colors['paper'],
     font_color=colors['text']
     )
 
@@ -203,7 +204,7 @@ def bloodflow_figure(value, bloodflow_checkmarks):
 
     if bloodflow_checkmarks is not None: #behebt Fehler: Nonetype object not iterable
         if bloodflow_checkmarks == ["SMA"]:
-            bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf["Blood Flow (ml/s)"],10) 
+            bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf["Blood Flow (ml/s)"],4) 
             fig3 = px.line(bf, x="Time (s)", y="Blood Flow (ml/s) - SMA")
 
         if bloodflow_checkmarks == ["CMA"]:
@@ -215,7 +216,7 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     avg = bf.mean()
     x = [0, 480]
     y = avg.loc['Blood Flow (ml/s)']
-    bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf[data_names[1]],10) 
+    bf["Blood Flow (ml/s) - SMA"] = ut.calculate_SMA(bf[data_names[1]],4) 
     bf_SMA =  bf["Blood Flow (ml/s) - SMA"]
 
     fig3.add_trace(go.Scatter(x = x, y= [y,y], mode = 'lines', name = 'Mittelwert'))
@@ -263,7 +264,7 @@ def bloodflow_figure(value, bloodflow_checkmarks):
     
     fig3.update_layout(
         plot_bgcolor=colors['background'],
-        paper_bgcolor=colors['background'],
+        paper_bgcolor=colors['paper'],
         font_color=colors['text']
     )   
     
